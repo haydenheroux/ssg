@@ -1,6 +1,8 @@
 package main
 
-import "strings"
+import (
+	"strings"
+)
 
 type BlockType int64
 
@@ -23,15 +25,16 @@ func collect(source []string) ([]Block, error) {
 	for _, line := range source {
 
 		var _type BlockType
-		var content []string
 
 		indicator := line[0]
 		if indicator == []byte("@")[0] {
 			_type = determineType(line)
-			content = determineContent(line, _type)
 		} else {
 			_type = Normal
-			content = []string{line}
+		}
+		content, err := determineContent(line, _type)
+		if err != nil {
+			return blocks, err
 		}
 
 		block := Block{Type: _type, Content: content}
@@ -63,6 +66,24 @@ func determineType(line string) BlockType {
 	}
 }
 
-func determineContent(line string, _type BlockType) []string {
-	return []string{line}
+func determineContent(line string, _type BlockType) ([]string, error) {
+	if _type == Normal {
+		return []string{line}, nil
+	}
+
+	segments := strings.Split(line, " ")
+	data := segments[1:]
+
+	switch _type {
+	case Code:
+		copied, err := Read(data[0])
+		return copied, err
+	case Image:
+		filePath := data[0]
+		text := data[1:]
+		caption := strings.Join(text, " ")
+		return []string{filePath, caption}, nil
+	default:
+		return []string{"ERROR: UNIMPLEMENTED"}, nil
+	}
 }
