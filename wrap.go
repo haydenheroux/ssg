@@ -24,7 +24,7 @@ func wrap(blocks []Block) []string {
 			}
 
 			if block.Type == Code {
-				output = append(output, fmt.Sprintf("<samp>%d</samp>", index+1)+line)
+				output = append(output, fmt.Sprintf("<samp>%d</samp>%s<br/>", index+1, line))
 			}
 
 			if block.Type == Image {

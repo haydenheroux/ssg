@@ -26,6 +26,11 @@ func collect(source []string) ([]Block, error) {
 
 		var _type BlockType
 
+		// Skip blank lines
+		if len(line) == 0 {
+			continue
+		}
+
 		indicator := line[0]
 		if indicator == []byte("@")[0] {
 			_type = determineType(line)
