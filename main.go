@@ -2,6 +2,7 @@ package main
 
 import (
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -11,15 +12,15 @@ func main() {
 
 	lines, err := Read(filePath)
 	if err != nil {
-		panic(err)
+		log.Fatalf("error while loading file: %v", err)
 	}
 
 	mutated, err := Generate(lines)
 	if err != nil {
-		panic(err)
+		log.Fatalf("error while generating content: %v", err)
 	}
 
 	if err := ioutil.WriteFile(filePath+".html", []byte(mutated), 0666); err != nil {
-		panic(err)
+		log.Fatalf("error while writing file: %v", err)
 	}
 }
