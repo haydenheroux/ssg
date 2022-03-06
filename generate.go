@@ -22,7 +22,10 @@ func Generate(source []string) (string, error) {
 
 	// Embed the source blocks into an existing template, which may include
 	// headers, footers, style-sheets, and scripts.
-	embedded := embed(formatted)
+	embedded, err := embed(formatted, "./header_template", "./footer_template")
+	if err != nil {
+		return "", err
+	}
 
 	for _, line := range embedded {
 		final += line
