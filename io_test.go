@@ -19,11 +19,9 @@ func TestRead(t *testing.T) {
 	expected := []string{"Line one", "Line two", "Line three"}
 	lines, err := Read(filePath)
 	if err != nil {
-		t.Logf("Error occurred: %v\n", err)
-		t.Fail()
+		t.Fatal(err)
 	}
 	if !equal(lines, expected) {
-		t.Logf("Got: %v, want: %v\n", lines, expected)
-		t.Fail()
+		t.Errorf("Got: %v, want: %v\n", lines, expected)
 	}
 }
