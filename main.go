@@ -1,6 +1,9 @@
 package main
 
-import "os"
+import (
+	"io/ioutil"
+	"os"
+)
 
 func main() {
 
@@ -16,7 +19,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := os.WriteFile(filePath+".html", []byte(mutated), 0666); err != nil {
+	if err := ioutil.WriteFile(filePath+".html", []byte(mutated), 0666); err != nil {
 		panic(err)
 	}
 }
