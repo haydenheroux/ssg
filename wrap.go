@@ -40,6 +40,11 @@ func wrap(blocks []Block) []string {
 				break
 			}
 
+			if block.Type == Header {
+				title := line
+				output = append(output, fmt.Sprintf("<h2>%s</h2>", title))
+			}
+
 		}
 
 		// Post

@@ -11,6 +11,7 @@ const (
 	Normal
 	Code
 	Image
+	Header
 )
 
 type Block struct {
@@ -66,6 +67,8 @@ func determineType(line string) BlockType {
 		return Code
 	case "img", "image":
 		return Image
+	case "section", "segment":
+		return Header
 	default:
 		return Error
 	}
@@ -88,6 +91,10 @@ func determineContent(line string, _type BlockType) ([]string, error) {
 		text := data[1:]
 		caption := strings.Join(text, " ")
 		return []string{filePath, caption}, nil
+	case Header:
+		text := data
+		title := strings.Join(text, " ")
+		return []string{title}, nil
 	default:
 		return []string{"ERROR: UNIMPLEMENTED"}, nil
 	}
