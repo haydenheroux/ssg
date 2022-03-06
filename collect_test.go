@@ -16,6 +16,13 @@ func TestDetermineTypeImage(t *testing.T) {
 	}
 }
 
+func TestDetermineTypeList(t *testing.T) {
+	result := determineType("@list path/to/list")
+	if result != List {
+		t.Errorf("got: %v, want: %v", result, List)
+	}
+}
+
 func TestDetermineContentCode(t *testing.T) {
 	expected, _ := Read("./tests/read_test")
 	result, err := determineContent("@code ./tests/read_test", Code)
@@ -30,6 +37,17 @@ func TestDetermineContentCode(t *testing.T) {
 func TestDetermineContentImage(t *testing.T) {
 	expected := []string{"path/to/image", "Caption for the image"}
 	result, err := determineContent("@img path/to/image Caption for the image", Image)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !equal(result, expected) {
+		t.Errorf("got: %v, want: %v", result, expected)
+	}
+}
+
+func TestDetermineContentList(t *testing.T) {
+	expected, _ := Read("./tests/list_test")
+	result, err := determineContent("@list ./tests/list_test", List)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -60,6 +78,22 @@ func TestImage(t *testing.T) {
 	_type := determineType(input)
 	if _type != Image {
 		t.Errorf("got: %v, want: %v", _type, Image)
+	}
+	result, err := determineContent(input, _type)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !equal(result, expected) {
+		t.Errorf("got: %v, want: %v", result, expected)
+	}
+}
+
+func TestList(t *testing.T) {
+	expected, _ := Read("./tests/list_test")
+	input := "@list ./tests/list_test"
+	_type := determineType(input)
+	if _type != List {
+		t.Errorf("got: %v, want: %v", _type, List)
 	}
 	result, err := determineContent(input, _type)
 	if err != nil {

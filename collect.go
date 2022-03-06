@@ -12,6 +12,7 @@ const (
 	Code
 	Image
 	Header
+	List
 )
 
 type Block struct {
@@ -63,12 +64,14 @@ func determineType(line string) BlockType {
 	token := segments[0]
 
 	switch token {
-	case "code":
+	case "code", "include":
 		return Code
 	case "img", "image":
 		return Image
 	case "section", "segment":
 		return Header
+	case "list":
+		return List
 	default:
 		return Error
 	}
@@ -95,6 +98,9 @@ func determineContent(line string, _type BlockType) ([]string, error) {
 		text := data
 		title := strings.Join(text, " ")
 		return []string{title}, nil
+	case List:
+		copied, err := Read(data[0])
+		return copied, err
 	default:
 		return []string{"ERROR: UNIMPLEMENTED"}, nil
 	}

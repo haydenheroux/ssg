@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func TestWrapCode(t *testing.T) {
-	expected := []string{"<code>", "<samp>1</samp>Line one", "<samp>2</samp>Line two", "<samp>3</samp>Line three", "</code>"}
+	expected := []string{"<code>", "<samp>1</samp>Line one<br/>", "<samp>2</samp>Line two<br/>", "<samp>3</samp>Line three<br/>", "</code>"}
 	blocks := make([]Block, 1)
 	blocks = append(blocks, Block{Type: Code, Content: []string{"Line one", "Line two", "Line three"}})
 	result := wrap(blocks)
@@ -18,6 +18,16 @@ func TestWrapImage(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	result := wrap(blocks)
+	if !equal(result, expected) {
+		t.Errorf("got: %v, want: %v", result, expected)
+	}
+}
+
+func TestWrapList(t *testing.T) {
+	expected := []string{"<ul>", "<li>List element one</li>", "<li>List element two</li>", "<li>List element three</li>", "</ul>"}
+	blocks := make([]Block, 1)
+	blocks = append(blocks, Block{Type: List, Content: []string{"List element one", "List element two", "List element three"}})
 	result := wrap(blocks)
 	if !equal(result, expected) {
 		t.Errorf("got: %v, want: %v", result, expected)

@@ -16,6 +16,10 @@ func wrap(blocks []Block) []string {
 			output = append(output, "<figure>")
 		}
 
+		if block.Type == List {
+			output = append(output, "<ul>")
+		}
+
 		// Content
 		for index, line := range block.Content {
 
@@ -40,6 +44,10 @@ func wrap(blocks []Block) []string {
 				break
 			}
 
+			if block.Type == List {
+				output = append(output, fmt.Sprintf("<li>%s</li>", line))
+			}
+
 			if block.Type == Header {
 				title := line
 				output = append(output, fmt.Sprintf("<h2>%s</h2>", title))
@@ -54,6 +62,10 @@ func wrap(blocks []Block) []string {
 
 		if block.Type == Image {
 			output = append(output, "</figure>")
+		}
+
+		if block.Type == List {
+			output = append(output, "</ul>")
 		}
 
 	}
