@@ -1,0 +1,17 @@
+@section Header for code
+
+@code read_test
+
+What I wrote above was code I wrote in another file being included into this one!
+
+@section Header for image
+
+@img rainbow.png This is a caption for the image
+
+@section Header for text
+
+Here is some text for this filler webpage!
+
+@section Header for list
+
+@list list_test
